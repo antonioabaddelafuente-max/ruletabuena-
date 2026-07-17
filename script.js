@@ -1,4 +1,4 @@
-// 1. Importamos Firebase directamente para la Web (Sin instalar NPM)
+// 1. Importaciones corregidas desde CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, doc, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
@@ -112,7 +112,6 @@ document.getElementById('spin').onclick = async () => {
     // 2. Elegir qué tipo de premio físico se le da si resultó GANADOR
     let premioAsignado = 'Gracias';
     if (resultadoServidor === "GANADOR") {
-      // Si el servidor le otorgó ganar, elegimos al azar uno de tus descuentos disponibles (10%, 5% o 3%)
       const opcionesGanadoras = ['10%', '5%', '3%', '3%']; 
       premioAsignado = opcionesGanadoras[Math.floor(Math.random() * opcionesGanadoras.length)];
     } else {
@@ -140,12 +139,10 @@ document.getElementById('spin').onclick = async () => {
       if (p < 1) {
         requestAnimationFrame(anim);
       } else {
-        // Al terminar la animación, mostramos el resultado definitivo
         document.getElementById('resultado').textContent = prizes[idx] === 'Gracias' 
           ? '¡Gracias por participar!' 
           : '¡Felicidades! Ganaste ' + prizes[idx] + ' de descuento!';
         
-        // Volver a habilitar el botón para el siguiente tiro
         document.getElementById('spin').style.pointerEvents = 'auto';
       }
     }
@@ -153,7 +150,7 @@ document.getElementById('spin').onclick = async () => {
 
   } catch (error) {
     console.error("Error en la ruleta segura:", error);
-    document.getElementById('resultado').textContent = 'Error de conexión. Inténtalo de nuevo.';
+    document.getElementById('resultado').textContent = 'Error de conexión o configuración inicial.';
     document.getElementById('spin').style.pointerEvents = 'auto';
   }
 }
