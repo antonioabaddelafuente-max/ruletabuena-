@@ -1,9 +1,9 @@
-// Tus premios originales actualizados (Total: 20 casillas)
+// Tus premios originales actualizados con mejor distribución visual inicial (Total: 20 casillas)
 const originalPrizes = [
-  '5%', '5%', '10%', '10%', 
-  '3%', '3%', '3%', '3%',
-  'Gracias', 'Gracias', 'Gracias', 'Gracias', 'Gracias', 'Gracias',
-  'Gracias', 'Gracias', 'Gracias', 'Gracias', 'Gracias', 'Gracias'
+  '10%', 'Gracias', '3%', 'Gracias', '5%',    // Grupo 1: Ganador fuerte, gracias, ganador suave, gracias, ganador medio
+  'Gracias', '3%', 'Gracias', '10%', 'Gracias', // Grupo 2: Repetimos patrón
+  '3%', 'Gracias', '5%', 'Gracias', '3%',    // Grupo 3: Mezclamos los ganadores restantes
+  'Gracias', 'Gracias', 'Gracias', 'Gracias', 'Gracias' // Grupo 4: El resto de 'Gracias'
 ];
 
 // Creamos una copia que es la que se va a mezclar visualmente
@@ -13,7 +13,7 @@ const c = document.getElementById('wheel'), ctx = c.getContext('2d');
 const n = 20, arc = 2 * Math.PI / n, r = 300;
 let rot = 0;
 
-// Función para mezclar aleatoriamente las posiciones visuales
+// Función para mezclar aleatoriamente las posiciones visuales (esto asegura aleatoriedad real)
 function mezclarPremios() {
   for (let i = prizes.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -43,7 +43,7 @@ function draw() {
   ctx.restore();
 }
 
-// Mezclamos al cargar la página por primera vez
+// Mezclamos al cargar la página por primera vez para aleatoriedad real
 mezclarPremios();
 draw();
 
