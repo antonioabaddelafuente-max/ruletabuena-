@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruleta Zipak Na</title>
+    
+    <!-- 1. Cargamos Firebase en versión Compat para que funcione abriendo el archivo directo -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <style>
+        /* Un diseño rápido para centrar todo */
         body { font-family: Arial, sans-serif; text-align: center; background: #222; color: #fff; padding: 20px; }
         #wheel { max-width: 100%; height: auto; margin-top: 20px; }
         button { font-size: 18px; padding: 10px 20px; margin-top: 15px; cursor: pointer; background: #e91e63; color: white; border: none; border-radius: 5px; }
@@ -16,15 +22,18 @@
 
     <h1>🎡 Ruleta Zipak Na 🎡</h1>
     
+    <!-- El lienzo de la ruleta -->
     <canvas id="wheel" width="600" height="600"></canvas>
     
     <br>
+    <!-- El botón para girar -->
     <button id="spin">¡Girar Ruleta!</button>
     
+    <!-- Mensajes de la app -->
     <div id="resultado">¡Prueba tu suerte!</div>
 
-    <!-- Vinculado exactamente a script.js -->
-    <script type="module" src="script.js"></script>
+    <!-- 2. Vinculamos tu script normal (le quitamos el type="module") -->
+    <script src="script.js"></script>
 
 </body>
 </html>
