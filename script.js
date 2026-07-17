@@ -1,5 +1,26 @@
 
-const prizes=['10%','5%',...Array(18).fill('Gracias')];
+const prizes=[
+'5%',
+'Gracias',
+'Gracias',
+'Gracias',
+'Gracias',
+'10%',
+'Gracias',
+'Gracias',
+'Gracias',
+'Gracias',
+'5%',
+'Gracias',
+'Gracias',
+'Gracias',
+'Gracias',
+'10%',
+'Gracias',
+'Gracias',
+'Gracias',
+'Gracias'
+];
 const c=document.getElementById('wheel'),ctx=c.getContext('2d');
 const n=20,arc=2*Math.PI/n,r=300;
 let rot=0;
