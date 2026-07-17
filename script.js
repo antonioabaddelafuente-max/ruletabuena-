@@ -1,8 +1,8 @@
-// 1. Importaciones corregidas desde CDN
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, doc, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+// Configuración para usar la versión Compat (Cargada desde el HTML)
+const initializeApp = firebase.initializeApp;
+const getFirestore = firebase.firestore;
 
-// 2. Tus credenciales exactas de Firebase (Tomadas de tu consola)
+// Tus credenciales exactas de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBoR_wvOSlVi7v87kW6h69rt51HP6I-aX4",
   authDomain: "ruleta-zipak-na-e1aaf.firebaseapp.com",
@@ -12,11 +12,11 @@ const firebaseConfig = {
   appId: "1:651224395844:web:b152ff1511e3ad6f874c11"
 };
 
-// Inicializamos la base de datos
+// Inicializamos Firebase y Firestore
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = getFirestore();
 
-// Tus premios originales actualizados con mejor distribución visual inicial (Total: 20 casillas)
+// Tus premios originales actualizados (Total: 20 casillas)
 const originalPrizes = [
   '10%', 'Gracias', '3%', 'Gracias', '5%',    
   'Gracias', '3%', 'Gracias', '10%', 'Gracias', 
@@ -24,7 +24,6 @@ const originalPrizes = [
   'Gracias', 'Gracias', 'Gracias', 'Gracias', 'Gracias' 
 ];
 
-// Creamos una copia que es la que se va a mezclar visualmente
 let prizes = [...originalPrizes];
 
 const c = document.getElementById('wheel'), ctx = c.getContext('2d');
@@ -66,18 +65,17 @@ mezclarPremios();
 draw();
 
 document.getElementById('spin').onclick = async () => {
-  // Deshabilitar botón temporalmente para evitar bugs durante la animación o multiclics
   document.getElementById('spin').style.pointerEvents = 'none';
   document.getElementById('resultado').textContent = 'Calculando tiro seguro...';
 
-  // Referencia al documento 'ruleta' dentro de la colección 'configuracion' que creaste
-  const ruletaRef = doc(db, "configuracion", "ruleta");
+  // Referencia al documento con la sintaxis Compat
+  const ruletaRef = db.collection("configuracion").doc("ruleta");
 
   try {
-    // 1. Preguntar de forma segura a Firestore si este tiro gana o pierde
-    const resultadoServidor = await runTransaction(db, async (transaction) => {
+    // Preguntar de forma segura a Firestore si este tiro gana o pierde
+    const resultadoServidor = await db.runTransaction(async (transaction) => {
       const sfDoc = await transaction.get(ruletaRef);
-      if (!sfDoc.exists()) {
+      if (!sfDoc.exists) {
         throw "El documento de control en Firestore no existe.";
       }
       
@@ -86,7 +84,6 @@ document.getElementById('spin').onclick = async () => {
       let premiosRestantes = datos.premios_restantes;
       let esGanador = false;
 
-      // SI PASAMOS LOS 100 TIROS, REINICIAMOS EL BLOQUE AUTOMÁTICAMENTE
       if (nuevoIntento > 100) {
         nuevoIntento = 1;
         premiosRestantes = 4;
@@ -94,13 +91,11 @@ document.getElementById('spin').onclick = async () => {
 
       let tirosPorDelante = 101 - nuevoIntento;
 
-      // MATEMÁTICA ESTRICTA: Controla que de cada 100 tiros salgan exactamente 4 ganadores
       if (premiosRestantes > 0 && (tirosPorDelante <= premiosRestantes || Math.random() < (premiosRestantes / tirosPorDelante))) {
         esGanador = true;
         premiosRestantes--;
       }
 
-      // Actualizamos los valores en la base de datos para el siguiente usuario
       transaction.update(ruletaRef, {
         intento: nuevoIntento,
         premios_restantes: premiosRestantes
@@ -109,7 +104,6 @@ document.getElementById('spin').onclick = async () => {
       return esGanador ? "GANADOR" : "PERDEDOR";
     });
 
-    // 2. Elegir qué tipo de premio físico se le da si resultó GANADOR
     let premioAsignado = 'Gracias';
     if (resultadoServidor === "GANADOR") {
       const opcionesGanadoras = ['10%', '5%', '3%', '3%']; 
@@ -118,14 +112,12 @@ document.getElementById('spin').onclick = async () => {
       premioAsignado = 'Gracias';
     }
 
-    // 3. Buscar en qué posición (índice) quedó ese premio en la ruleta mezclada visualmente
     const indicesPosibles = [];
     prizes.forEach((p, index) => {
       if (p === premioAsignado) indicesPosibles.push(index);
     });
     const idx = indicesPosibles[Math.floor(Math.random() * indicesPosibles.length)];
 
-    // 4. Calcular animación hacia ese índice físico en la pantalla
     const target = (Math.PI * 2 * 8) + ((20 - idx) * arc) - arc / 2;
     let start = rot, d = target - start, t0 = null;
 
