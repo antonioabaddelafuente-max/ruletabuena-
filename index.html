@@ -3,21 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zipak Ná - Ruleta</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Ruleta Zipak Na</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #222; color: #fff; padding: 20px; }
+        #wheel { max-width: 100%; height: auto; margin-top: 20px; }
+        button { font-size: 18px; padding: 10px 20px; margin-top: 15px; cursor: pointer; background: #e91e63; color: white; border: none; border-radius: 5px; }
+        button:hover { background: #c2185b; }
+        #resultado { font-size: 22px; font-weight: bold; margin-top: 20px; color: #00bcd4; }
+    </style>
 </head>
 <body>
-    <div class="contenedor">
-        <h1>ZIPAK NÁ</h1>
-        <div class="ruleta-container">
-            <canvas id="wheel" width="600" height="600"></canvas>
-            <div class="flecha"></div>
-        </div>
-        <button id="spin">GIRAR</button>
-        <h2 id="resultado"></h2>
-    </div>
 
-    <!-- Cambiamos el src normal agregando type="module" para que Firebase funcione a la perfección -->
+    <h1>🎡 Ruleta Zipak Na 🎡</h1>
+    
+    <canvas id="wheel" width="600" height="600"></canvas>
+    
+    <br>
+    <button id="spin">¡Girar Ruleta!</button>
+    
+    <div id="resultado">¡Prueba tu suerte!</div>
+
+    <!-- Vinculado exactamente a script.js -->
     <script type="module" src="script.js"></script>
+
 </body>
 </html>
